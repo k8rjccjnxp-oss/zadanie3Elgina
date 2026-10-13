@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}{{ 'Редактирование заказа' if order else 'Новый заказ' }} — ВелоСклад{% endblock %}{% block content %}
+<div class="heading"><h1>{{ 'Редактирование заказа' if order else 'Добавление заказа' }}</h1><a class="button secondary" href="{{ url_for('orders') }}">← Назад к заказам</a></div>
+<form class="form-card" method="post"><div class="form-grid"><label>Артикул заказа *<input name="article" required value="{{ order.article if order else '' }}" placeholder="ORD-1003"></label>
+<label>Статус *<select name="status">{% for s in ['Новый','В обработке','Готов к выдаче','Выдан','Отменён'] %}<option {% if order and order.status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select></label>
+<label class="wide">Адрес пункта выдачи *<input name="pickup_address" required value="{{ order.pickup_address if order else '' }}"></label>
+<label>Товар *<select name="product_id" required>{% for p in products %}<option value="{{ p.id }}" {% if item and item.product_id==p.id %}selected{% endif %}>{{ p.name }} (остаток: {{ p.stock }})</option>{% endfor %}</select></label>
+<label>Количество *<input name="quantity" type="number" min="1" required value="{{ item.quantity if item else 1 }}"></label></div><div class="form-actions"><button class="primary">Сохранить</button><a class="button secondary" href="{{ url_for('orders') }}">Отмена</a></div></form>{% endblock %}
