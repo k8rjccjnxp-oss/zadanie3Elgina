@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Вход — ВелоСклад{% endblock %}{% block content %}
+<section class="login-card"><h1>Вход в систему</h1><p class="muted">Введите учётные данные или продолжите как гость.</p>
+<form method="post"><label>Логин<input name="username" required autocomplete="username"></label><label>Пароль<input name="password" type="password" required autocomplete="current-password"></label><button class="primary" type="submit">Войти</button></form>
+<a class="button secondary full" href="{{ url_for('guest') }}">Продолжить как гость</a>
+<div class="demo"><b>Демо-доступ:</b><br>admin / admin123<br>manager / manager123<br>client / client123</div></section>{% endblock %}
