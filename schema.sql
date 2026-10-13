@@ -1,0 +1,27 @@
+PRAGMA foreign_keys = ON;
+CREATE TABLE users (
+ id INTEGER PRIMARY KEY AUTOINCREMENT,
+ username TEXT NOT NULL UNIQUE,
+ password_hash TEXT NOT NULL,
+ full_name TEXT NOT NULL,
+ role TEXT NOT NULL CHECK(role IN ('client','manager','admin'))
+);
+CREATE TABLE categories (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE);
+CREATE TABLE suppliers (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE);
+CREATE TABLE products (
+ id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL,
+ category_id INTEGER REFERENCES categories(id), description TEXT DEFAULT '',
+ manufacturer TEXT DEFAULT '', supplier_id INTEGER REFERENCES suppliers(id),
+ price REAL NOT NULL CHECK(price >= 0), unit TEXT NOT NULL DEFAULT 'шт.',
+ stock INTEGER NOT NULL DEFAULT 0 CHECK(stock >= 0),
+ discount REAL NOT NULL DEFAULT 0 CHECK(discount >= 0 AND discount <= 100), image_path TEXT DEFAULT ''
+);
+CREATE TABLE orders (
+ id INTEGER PRIMARY KEY AUTOINCREMENT, article TEXT NOT NULL UNIQUE,
+ status TEXT NOT NULL DEFAULT 'Новый', pickup_address TEXT NOT NULL,
+ order_date TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE order_items (
+ id INTEGER PRIMARY KEY AUTOINCREMENT, order_id INTEGER NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
+ product_id INTEGER NOT NULL REFERENCES products(id), quantity INTEGER NOT NULL DEFAULT 1 CHECK(quantity > 0)
+);
