@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %}{{ 'Редактирование товара' if product else 'Новый товар' }} — ВелоСклад{% endblock %}{% block content %}
+<div class="heading"><div><h1>{{ 'Редактирование товара' if product else 'Добавление товара' }}</h1><p class="muted">Поля со звёздочкой обязательны</p></div><a class="button secondary" href="{{ url_for('products') }}">← Назад к товарам</a></div>
+<form class="form-card" method="post"><div class="form-grid">
+<label>Наименование *<input name="name" required value="{{ product.name if product else '' }}"></label>
+<label>Категория<select name="category_id"><option value="">Не выбрана</option>{% for c in categories %}<option value="{{ c.id }}" {% if product and product.category_id==c.id %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select></label>
+<label>Производитель<input name="manufacturer" value="{{ product.manufacturer if product else '' }}"></label>
+<label>Поставщик<select name="supplier_id"><option value="">Не выбран</option>{% for s in suppliers %}<option value="{{ s.id }}" {% if product and product.supplier_id==s.id %}selected{% endif %}>{{ s.name }}</option>{% endfor %}</select></label>
+<label>Цена, ₽ *<input type="number" name="price" min="0" step="0.01" required value="{{ product.price if product else '0' }}"></label>
+<label>Количество на складе *<input type="number" name="stock" min="0" step="1" required value="{{ product.stock if product else '0' }}"></label>
+<label>Единица измерения<input name="unit" value="{{ product.unit if product else 'шт.' }}"></label>
+<label>Действующая скидка, %<input type="number" name="discount" min="0" max="100" step="0.01" value="{{ product.discount if product else '0' }}"></label>
+<label class="wide">Путь/URL изображения<input name="image_path" value="{{ product.image_path if product else '' }}" placeholder="/static/images/product.png"></label>
+<label class="wide">Описание<textarea name="description" rows="4">{{ product.description if product else '' }}</textarea></label></div><div class="form-actions"><button class="primary">Сохранить</button><a class="button secondary" href="{{ url_for('products') }}">Отмена</a></div></form>{% endblock %}
